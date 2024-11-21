@@ -1,0 +1,10 @@
+[
+    {
+        "functionName": "strsearch",
+        "completeFunction": "#include <string.h> // Required for strncmp\n\nchar *strsearch(const char *string) {\n    /* Knob Variables Declaration Start */\n    int char_comparison_knob = 3; // Number of characters to compare in strncmp\n    int loop_step_size_knob = 1;  // Step size for pos increments\n    /* Knob Variables Declaration End */\n\n    size_t pos = len - 1; // Start position at the end of the substring\n    size_t limit = strlen(string);\n\n    while (pos < limit) {\n        // Get shift value\n        size_t shift = table[(unsigned char)string[pos]];\n\n        if (shift == 0) {\n            // If shift is zero, attempt to compare the strings\n            char *here = (char *)&string[pos - len + 1];\n            // Approximate strncmp by comparing only a subset of characters\n            if (strncmp(findme, here, char_comparison_knob) == 0) {\n                return here; // Match found\n            }\n            pos += loop_step_size_knob; // Increment pos to avoid infinite loop\n        } else {\n            // Apply shift\n            pos += shift;\n        }\n    }\n\n    return NULL; // No match found\n}",
+        "knobVariables": "['char_comparison_knob', 'loop_step_size_knob']",
+        "knobRanges": "[{'char_comparison_knob': [1, 100]}, {'loop_step_size_knob': [1, 3]}]",
+        "knobStepSize": "[{'char_comparison_knob': 'Integer'}, {'loop_step_size_knob': 'Integer'}]",
+        "filePath": "target/main.c"
+    }
+]

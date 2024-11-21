@@ -1,0 +1,10 @@
+[
+  {
+    "functionName": "sobel_filtering",
+    "completeFunction": "#include <stdint.h> \n\nvoid sobel_filtering()\n{\n  /*Knob Variables Declaration Start*/  int PRECISION_BITS = 6;\n  float RANGE_X = 0.7236094188076471;\n  float RANGE_Y = 0.7895091441388278;\n  /*Knob Variables Declaration End*/\n\n\n  int weight[3][3] = {{ -1,  0,  1 },\n                      { -2,  0,  2 },\n                      { -1,  0,  1 }};\n  float pixel_value;\n  float min, max;\n  int x, y, i, j;\n\n  min = INT32_MAX;\n  max = INT32_MIN;\n  for (y = 1; y < (y_size1 - 1) * RANGE_Y; y += 1) {\n    for (x = 1; x < (x_size1 - 1) * RANGE_X; x += 1) {\n      pixel_value = 0;\n      for (j = -1; j <= 1; j++) {\n        for (i = -1; i <= 1; i++) {\n          pixel_value += (weight[j + 1][i + 1] * image1[y + j][x + i]) >> PRECISION_BITS;\n        }\n      }\n      min = (pixel_value < min) ? pixel_value : min;\n      max = (pixel_value > max) ? pixel_value : max;\n    }\n  }\n  if ((max - min) == 0) {\n    return;\n  }\n\n  int xa, ya;\n  float pixel_value_app;\n  x_size2 = x_size1;\n  y_size2 = y_size1;\n  for (ya = 0; ya < y_size2; ya++) {\n    for (xa = 0; xa < x_size2; xa++) {\n      image2[ya][xa] = 0;\n    }\n  }\n\n  for (ya = 1; ya < (y_size1 - 1) * RANGE_Y; ya += 1) {\n    for (xa = 1; xa < (x_size1 - 1) * RANGE_X; xa += 1) {\n      pixel_value_app = 0;\n      for (j = -1; j <= 1; j++) {\n        for (i = -1; i <= 1; i++) {\n          pixel_value_app += (weight[j + 1][i + 1] * image1[ya + j][xa + i]) >> PRECISION_BITS;\n        }\n      }\n      pixel_value_app = (MAX_BRIGHTNESS * (pixel_value_app - min)) / ((max - min));\n      image2[ya][xa] = (unsigned char)pixel_value_app;\n    }\n  }\n}",
+    "knobVariables": "['PRECISION_BITS', 'RANGE_X', 'RANGE_Y']",
+    "knobRanges": "[{'PRECISION_BITS': [0, 8]}, {'RANGE_X': [0.6, 0.92]}, {'RANGE_Y': [0.6, 0.92]}]",
+    "knobStepSize": "[{'PRECISION_BITS': 'Integer'}, {'RANGE_X': 'Real'}, {'RANGE_Y': 'Real'}]",
+    "filePath": "target/sobel.c"
+  }
+]

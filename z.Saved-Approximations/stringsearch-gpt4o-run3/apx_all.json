@@ -1,0 +1,18 @@
+[
+    {
+        "functionName": "init_search",
+        "completeFunction": "void init_search(const char *string)\n{\n    size_t i;\n\n    /* Knob Variables Declaration Start */\n    const size_t MAX_LENGTH = 254;\n    /* Knob Variables Declaration End */\n\n    // Approximation: Limit the length calculation to a maximum value\n    len = (strlen(string) > MAX_LENGTH) ? MAX_LENGTH : strlen(string);\n\n    // Approximation: Use a step size to reduce iterations\n    for (i = 0; i <= UCHAR_MAX; i += APPROX_FACTOR) /* rdg 10/93 */\n        table[i] = len;\n\n    // Approximation: Use a probability to decide updates\n    for (i = 0; i < len; i++) {\n        if ((double)rand() / RAND_MAX < UPDATE_PROBABILITY)\n            table[(unsigned char)string[i]] = len - i - 1;\n    }\n\n    findme = (char *)string;\n}",
+        "knobVariables": "['MAX_LENGTH', 'APPROX_FACTOR', 'UPDATE_PROBABILITY']",
+        "knobRanges": "[{'MAX_LENGTH': [10, 255]}]",
+        "knobStepSize": "[{'MAX_LENGTH': 'Integer'}]",
+        "filePath": "target/main.c"
+    },
+    {
+        "functionName": "strsearch",
+        "completeFunction": "char *strsearch(const char *string) {\n    /* Knob Variables Declaration Start */\n    float knob = 0.5;  // Set the knob value to control the level of truncation (0.0 to 1.0)\n    /* Knob Variables Declaration End */\n\n    size_t pos = len - 1; // Start position at the end of the substring\n    size_t limit = strlen(string);\n\n    // Apply truncation based on the knob value\n    size_t truncated_limit = (size_t)(limit * knob);  // Truncate the limit based on the knob setting\n\n    while (pos < truncated_limit) {\n        // Get shift value\n        size_t shift = table[(unsigned char)string[pos]];\n\n        if (shift == 0) {\n            // If shift is zero, attempt to compare the strings\n            char *here = (char *)&string[pos - len + 1];\n            if (strncmp(findme, here, len) == 0) {\n                return here; // Match found\n            }\n            pos++; // Increment pos to avoid infinite loop\n        } else {\n            // Apply shift\n            pos += shift;\n        }\n    }\n\n    return NULL; // No match found\n}",
+        "knobVariables": "['knob']",
+        "knobRanges": "[{'knob': [0.1, 1.0]}]",
+        "knobStepSize": "[{'knob': 'Float'}]",
+        "filePath": "target/main.c"
+    }
+]

@@ -1,0 +1,2 @@
+gcc -DLOCAL_RUN -c main.c
+gcc -DLOCAL_RUN -o main main.o
