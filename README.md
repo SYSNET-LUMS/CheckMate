@@ -93,10 +93,10 @@ Create a `.env` file in the root directory of CheckMate with the following confi
 1. **Configure the Tool:**
    - Place your **API key** and **model name** in the `.env` file.
    - Place the application to be approximated (along with its required compilation files) in the `target` folder.
-   - If using a checkpointing library other than `iclib ManageState`, include the necessary library files in the `target` folder as well (to be updated).
+   - If using a checkpointing library other than `iclib ManageState`, include the necessary library files in the `target` folder as well (to be added).
 
 2. **Define Inputs:**
-   - Fill in the `error class` and `energy trace` variables in the `inputs.yml` file (details pending).
+   - Fill in the `error class` and `energy trace` variables in the `inputs.yml` file (to be added).
 
 3. **Note:** 
    - The recommended LLM snapshot is `gpt-4o-2024-11-20`, as it has undergone the most testing and provides stable performance.
