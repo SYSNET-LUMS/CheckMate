@@ -1,0 +1,11 @@
+{add_error}
+
+This is the function {function_name}. Identify all areas of the code where you think approximation techniques can be safely applied. Mark these areas of code with a comment: /* @Approximation possibility [No.n] [description] */. (It is not mandatory for such an area to exist in this function.).  
+
+If there is a variable whose value can be adjusted (increased or decreased) to reduce instruction count or clock cycles, mark it with a // $Knob Variable before its initialization. You can also introduce new knob variables and use them across multiple locations in the code to give the end user the ability to tune the approximations.
+
+A point to note, this code is ment for {platform_architecture} architecture, so your suggest changes should be possiable within the architecture.
+
+{function_code}
+
+Please respond in the correct JSON format: {output_format}

@@ -1,0 +1,7 @@
+An error occured when compiling the code or at run time.
+
+Compilation Error: {this_err}
+
+
+Please try again writing the code in a correct format. You may also choose to change tha approximation.
+

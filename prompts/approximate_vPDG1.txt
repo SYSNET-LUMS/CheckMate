@@ -1,0 +1,11 @@
+{add_error}
+
+Now, for the {function_name} function, approximate the code using the approximations highlited in previous prompt. The goal is to modify this function to reduce the number of clock cycles it uses. Focus on the identified areas of potential improvement and apply the described approximations. Additionally, for any of the Knob Variables identified or created, ensure they are declared at the top of the function within the `/*Knob Variables Declaration Start*/` and `/*Knob Variables Declaration End*/` comments. If knob variables a created, they must be initalize within the function, not as gloabl variables.
+
+Return the following:
+- The approximated code.
+- A list of knob variables.
+- A list of ranges for each knob variable.
+- The step size by which to increment each knob variable; two options: Real or Integer.
+
+If you are applying loop perforation, consider **truncation and not reduced sampling** strategies. Truncation, such as `for (int i = 0; i < (1000 * 0.8); i++)`, reduces the total number of iterations by a fixed percentage and provides more flexibility for tuning. On the other hand, reduced sampling, such as `for (int i = 0; i < 1000; i += 2)`, skips a certain number of iterations (in this case, every other iteration).

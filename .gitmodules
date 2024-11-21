@@ -1,0 +1,3 @@
+[submodule "Fused"]
+	path = Fused
+	url = git@github.com:rafayy769/fused-checkmate.git

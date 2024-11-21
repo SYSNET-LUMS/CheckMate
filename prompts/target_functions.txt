@@ -1,0 +1,17 @@
+Before we begin the process above, let us first identify which functions should be approximated. For all functions in the code, please reply in this format:
+
+# List of functions
+{{
+  "function_1": "approximate",
+  "function_2": "do not approximate",
+  ...
+  (all functions in code)
+}}
+
+# Reasoning
+
+
+A point to note, the end_simulation function is not to be approximated under any circumstance.
+
+Here is the codebase:
+{code_base}

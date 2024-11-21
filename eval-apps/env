@@ -1,0 +1,3 @@
+export MSP430_GCC_ROOT=${HOME}/.local/msp430-gcc
+export MSP430_INC=${HOME}/.local/msp430-inc
+export ARM_GCC_ROOT=${HOME}/.local/arm-gcc

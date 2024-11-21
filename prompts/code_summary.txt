@@ -1,0 +1,1 @@
+Create a small summary of the app and its purpose. Then, for each function, write a brief summary of its purpose, its inputs and outputs, and how it accomplishes its goal. Also, indicate whether it will be approximated or not in accordance with what you have reported above.

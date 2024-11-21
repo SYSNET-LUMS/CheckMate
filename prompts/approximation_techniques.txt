@@ -1,0 +1,22 @@
+Approximation techniques in computing are strategies used to simplify or reduce the computational intensity of processes, trading off some degree of accuracy or precision for reduced energy consumption or reduced resource consumption. Here's a summary of the 20 approximation techniques:
+
+1. Loop perforation: Reduces runtime by truncating the loop condition statement, sacrificing some output accuracy for speed.
+2. Precision scaling: Lowers the precision of numerical calculations to save resources while affecting minimally acceptable inaccuracies.
+3. Function memoization: Caches results of expensive function calls to avoid redundant computations, speeding up execution.
+4. Task skipping: Omits non-critical tasks to improve performance, particularly in scenarios where not all functions are essential for acceptable outcomes.
+5. Approximate data structures: Uses structures that provide estimative results for large data queries, balancing accuracy and computational overhead.
+6. Probabilistic algorithms: Relies on algorithms that incorporate randomness to provide solutions that are correct with a certain probability, optimizing speed over guaranteed accuracy.
+7. Truncated computations: Stops an algorithm before its complete theoretical execution, yielding a result faster but with less precision.
+8. Simplified models or algorithms: Employs less complex algorithms to reduce computation needs at the expense of some detail and accuracy.
+9. Dynamic precision adjustment: Adjusts the computational precision based on current system load or requirements, optimizing for performance or energy.
+10. Quantization: Reduces the range of numbers or data points to smaller, manageable sets, crucial in operations like machine learning.
+11. Energy-aware computation: Modifies computational fidelity for energy efficiency, crucial in battery-operated and ecological computing.
+12. Data approximation: Utilizes compressed or simplified versions of data to expedite operations, often used in processing large-scale or complex datasets.
+13. Selective re-computation: Reuses existing computational results when possible, recalculating only when essential changes occur.
+14. Multi-fidelity modeling: Combines multiple models of varying accuracies to strike a balance between computational expense and result accuracy.
+15. Relaxed consistency models: Eases consistency constraints in distributed systems to reduce synchronization overhead, boosting performance.
+16. Sparse computation: Focuses resources on significant data points, ignoring zeroes in sparse matrices for efficiency.
+17. Neural network pruning: Trims insignificant neural connections to streamline models for faster processing and reduced model size.
+18. Approximate join techniques: Implements faster, non-exact methods for database joins to improve query times at the cost of some precision.
+19. Use of surrogate functions: Substitutes complex functions with simpler ones to decrease computational demands.
+20. Adaptive algorithms: Adjusts algorithmic behavior based on input data characteristics or system conditions to optimize processing.

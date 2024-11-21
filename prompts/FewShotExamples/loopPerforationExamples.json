@@ -1,0 +1,34 @@
+[
+    {
+    "functionName": "sum_of_squares_perforated",
+    "completeFunction": "int sum_of_squares_perforated(int n) {\n    int sum = 0;\n    float loop_perforation_factor = 0.8;\n    for (int i = 1; i <= n * loop_perforation_factor; i++) {\n        sum += i * i;\n    }\n    return sum;\n}",
+    "knobVariables": "[\"loop_perforation_factor\"]",
+    "knobRanges": "[{\"loop_perforation_factor\": [0, 1]}]",
+    "knobStepSize": "[{\"loop_perforation_factor\": \"Real\"}]",
+    "filePath": "target/examples.c"
+    },
+    {
+    "functionName": "product_of_integers_perforated",
+    "completeFunction": "int product_of_integers_perforated(int n) {\n    int product = 1;\n    float loop_perforation_factor = 0.8;\n    for (int i = 1; i <= n * loop_perforation_factor; i++) {\n        product *= i;\n    }\n    return product;\n}",
+    "knobVariables": "[\"loop_perforation_factor\"]",
+    "knobRanges": "[{\"loop_perforation_factor\": [0, 1]}]",
+    "knobStepSize": "[{\"loop_perforation_factor\": \"Real\"}]",
+    "filePath": "target/examples.c"
+    },
+    {
+    "functionName": "factorial_perforated",
+    "completeFunction": "int factorial_perforated(int n) {\n    int result = 1;\n    float loop_perforation_factor = 0.8;\n    for (int i = 1; i <= n * loop_perforation_factor; i++) {\n        result *= i;\n    }\n    return result;\n}",
+    "knobVariables": "[\"loop_perforation_factor\"]",
+    "knobRanges": "[{\"loop_perforation_factor\": [0, 1]}]",
+    "knobStepSize": "[{\"loop_perforation_factor\": \"Real\"}]",
+    "filePath": "target/examples.c"
+    },
+    {
+    "functionName": "square_of_integers_perforated",
+    "completeFunction": "void square_of_integers_perforated(int n, int result[]) {\n    float loop_perforation_factor = 0.8;\n    for (int i = 0; i < n * loop_perforation_factor; i++) {\n        result[i] = i * i;\n    }\n}",
+    "knobVariables": "[\"loop_perforation_factor\"]",
+    "knobRanges": "[{\"loop_perforation_factor\": [0, 1]}]",
+    "knobStepSize": "[{\"loop_perforation_factor\": \"Real\"}]",
+    "filePath": "target/examples.c"
+    }
+]

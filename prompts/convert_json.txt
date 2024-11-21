@@ -1,0 +1,11 @@
+{add_error}
+I would like you to reformat the code you just generated into a JSON object. The JSON should contain the following information:
+
+    1. approximated_code: The full block of code that you generated.
+    2. knob_variables: A list of all the variable names that can be tuned or adjusted in the code. These are the "knobs."
+    3. knob_ranges: The possible ranges of each knob variable (in the form of minimum and maximum values or specific values, if applicable).
+    4. knob_increments: The increments by which each knob variable can change. Specify whether the increment is a Real number or an Integer.
+
+Format the output as a clean and structured JSON object as described here:
+
+{output_instuctions}

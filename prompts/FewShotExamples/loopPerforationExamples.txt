@@ -1,0 +1,156 @@
+Here are examples of loop perforation. If applying loop perforation only apply in this format. No other format of loop perforation is ever acceptable. Do not add in the iteration step, only the condition step.
+
+### Example 1: Sum of Squares
+
+#### Perforated function
+
+c
+int sum_of_squares_perforated(int n) {
+    int sum = 0;
+    float loop_perforation_factor = 0.8;
+    for (int i = 1; i <= n * loop_perforation_factor; i++) {
+        sum += i * i;
+    }
+    return sum;
+}
+
+
+
+### Example 2: Product of Integers
+
+#### Perforated function
+
+c
+int product_of_integers_perforated(int n) {
+    int product = 1;
+    float loop_perforation_factor = 0.8;
+    for (int i = 1; i <= n * loop_perforation_factor; i++) {
+        product *= i;
+    }
+    return product;
+}
+
+
+
+### Example 3: Factorial of n
+
+#### Perforated function
+
+c
+int factorial_perforated(int n) {
+    int result = 1;
+    float loop_perforation_factor = 0.8;
+    for (int i = 1; i <= n * loop_perforation_factor; i++) {
+        result *= i;
+    }
+    return result;
+}
+
+
+### Example 4: Square of Integers Stored in an Array
+
+#### Perforated function
+
+c
+void square_of_integers_perforated(int n, int result[]) {
+    float loop_perforation_factor = 0.8;
+    for (int i = 0; i < n * loop_perforation_factor; i++) {
+        result[i] = i * i;
+    }
+}
+
+
+### Example 5: Matrix Multiplication
+
+#### Original un-perforated function
+
+```c
+void matrix_multiply(int n, int A[n][n], int B[n][n], int C[n][n]) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            C[i][j] = 0;
+            for (int k = 0; k < n; k++) {
+                C[i][j] += A[i][k] * B[k][j];
+            }
+        }
+    }
+}
+```
+
+#### Perforated function
+
+```c
+void matrix_multiply_perforated(int n, int A[n][n], int B[n][n], int C[n][n]) {
+    float loop_perforation_factor = 0.8;
+    int perforated_n = n * loop_perforation_factor;
+    for (int i = 0; i < perforated_n; i++) {
+        for (int j = 0; j < perforated_n; j++) {
+            C[i][j] = 0;
+            for (int k = 0; k < n; k++) {
+                C[i][j] += A[i][k] * B[k][j];
+            }
+        }
+    }
+}
+```
+
+### Example 6:
+
+#### Original un-perforated function
+
+void susan_edges(in, r, mid, bp, max_no, x_size, y_size)
+    uchar *in,
+    *bp, *mid;
+int *r, max_no, x_size, y_size;
+{
+  /*Knob Variables Declaration Start*/
+  int loop_skip = 2;
+  float precision_scale = 0.9;
+  /*Knob Variables Declaration End*/
+
+  float z;
+  int do_symmetry, i, j, m, n, a, b, x, y, w;
+  uchar c, *p, *cp;
+
+  memset(r, 0, x_size * y_size * sizeof(int));
+
+  for (i = 3; i < y_size - 3; i += loop_skip) /* @Approximation applied [No.1] [Loop Perforation] */
+    for (j = 3; j < x_size - 3; j += loop_skip) /* @Approximation applied [No.1] [Loop Perforation] */
+    {
+      n = 100;
+      p = in + (i - 3) * x_size + j - 1;
+      cp = bp + in[i * x_size + j];
+    }
+}  
+
+#### Perforated function
+
+void susan_edges(in, r, mid, bp, max_no, x_size, y_size)
+    uchar *in,
+    *bp, *mid;
+int *r, max_no, x_size, y_size;
+{
+  /*Knob Variables Declaration Start*/
+  int loop_perforation_factor = 0.2;
+  float precision_scale = 0.9;
+  /*Knob Variables Declaration End*/
+
+  float z;
+  int do_symmetry, i, j, m, n, a, b, x, y, w;
+  uchar c, *p, *cp;
+
+  memset(r, 0, x_size * y_size * sizeof(int));
+
+  int loop_truc1 = (y_size - 3) * loop_perforation_factor /* truncating the loop */
+  int loop_truc2 = (y_size - 3) * loop_perforation_factor /* truncating the loop */
+  for (i = 3; i < loop_truc1; i++) /* @Approximation applied [No.1] [Loop Perforation] */
+    for (j = 3; j < loop_truc2; j++) /* @Approximation applied [No.1] [Loop Perforation] */
+    {
+      n = 100;
+      p = in + (i - 3) * x_size + j - 1 - n;
+      cp = bp + in[i * x_size + p];
+    }
+
+  return cp;
+}
+	

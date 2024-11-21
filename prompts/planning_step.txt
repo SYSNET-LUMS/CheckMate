@@ -1,0 +1,6 @@
+Now, let's move to the planning step. For the given function, {function_name}, what are the possible approximations that can be performed?
+
+If there exists a knob variable (a variable that, when changed, increases or decreases the level of approximations), state that it is a candidate.
+
+A point to note, this code is ment for {platform_architecture} architecture, space for large variables(like lookup table) is limited. Your suggest changes should be possiable within the architecture.
+

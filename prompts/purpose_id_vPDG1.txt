@@ -1,0 +1,5 @@
+This is the purpose identification step.
+
+This is {function_name}. What is the purpose of this function? How does it accomplish its purpose? How would its output interact with the rest of the code?
+
+{function_code}

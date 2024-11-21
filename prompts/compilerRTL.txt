@@ -1,0 +1,11 @@
+{compiler_error}
+
+Given a list of C source and header files in a directory, output a Makefile to compile the application. You must include the flag "-fdump-rtl-expand" as we want to generate .expand files. You must also include "-DLOCAL_RUN" flag.
+Do not include any warning flags like -Wall
+
+files = {files_list}
+
+- Ignore non-source files such as .txt.
+- Ensure make runs successfully with gcc.
+- Include a make clean target to remove object files and executables.
+- Output only the Makefile content. Your exact output will be pasted into the Makefile, so do not include extra formatting like triple backticks.
