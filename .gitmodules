@@ -1,3 +1,6 @@
 [submodule "Fused"]
 	path = Fused
 	url = git@github.com:rafayy769/fused-checkmate.git
+[submodule "dev-tools"]
+	path = dev-tools
+	url = git@github.com:Bakhbooti-AISA/CheckMate-DevModule.git
