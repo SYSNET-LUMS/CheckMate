@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/config/CheckMate_logo.png" alt="CheckMate Logo" width="200">
+  <img src="/config/CheckMate_logo.png" alt="CheckMate Logo" width="250">
 </p>
 
 
