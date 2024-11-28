@@ -113,3 +113,15 @@ Create a `.env` file in the root directory of CheckMate with the following confi
 
 - Ensure that all dependencies, especially `clangd` and `egypt`, are installed correctly before proceeding with application analysis.
 - Use of a virtual environment is highly encouraged to prevent conflicts with global Python installations.
+
+## Citing CheckMate 
+Abdur-Rahman Ibrahim Sayyid-Ali, Abdul Rafay, Muhammad Abdullah Soomro, Muhammad Hamad Alizai, Naveed Anwar Bhatti. LLM-Powered Approximate Intermittent Computing, 2024
+
+```bibtex
+@inproceedings{Ali2024CheckMate,
+  title={{CheckMate}: Extracting Permission-protected Private Information from Smartphone Voice Assistant using Zero-Permission Sensors,
+  author={Sayyid-Ali, Abdur-Rahman Ibrahim and Rafay, Abdul and Soomro, Muhammad Abdullah and Alizai, Muhammad Hamad and Bhatti, Naveed Anwar},
+  year={2024},
+  booktitle={arXiv},
+}
+```
