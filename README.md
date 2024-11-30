@@ -6,7 +6,7 @@
 
 ## **CheckMate: LLM-Powered Approximate Intermittent Computing**
 
-CheckMate is a tool designed to analyze and approximate application codebases using LLMs, facilitating intermittent computing applications. The framework incorporates tools like `egypt`, `clangd`, and a customized version of the `fused` simulator.
+CheckMate is a tool designed to analyze and approximate application codebases using LLMs, facilitating intermittent computing applications. Please refer to [our CheckMate paper](https://arxiv.org/pdf/2411.17732) for more details. The framework incorporates tools like `egypt`, `clangd`, and a customized version of the `fused` simulator.
 
 ---
 
