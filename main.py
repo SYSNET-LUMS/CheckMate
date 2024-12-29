@@ -79,6 +79,8 @@ from utils.error_analyzer import generateGroundTruth
 from utils.checkpoints import checkpointOrchestration
 import csv
 
+# ----------- README FOLLOW ALONG START HERE -----------
+
 # LLM API initialization and PDF generation have already been done in lib/llm.py and lib/pdf.py respectively.
 
 
