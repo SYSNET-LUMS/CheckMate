@@ -2,7 +2,6 @@ import os
 import shutil
 import subprocess
 import json
-from ruamel.yaml import YAML
 
 def buildObjects(appName):
 
@@ -100,25 +99,6 @@ def copyNonMakefiles(targetDir, appName):
             # Copy file from source to destination
             shutil.copy2(source_file, destination_file)
             # print(f"Copied {source_file} to {destination_file}")
-
-def updateYamlFile(new_voltage_trace_file, new_capacitor_value, file_path="fusedBin/config.yaml"):
-    # Initialize the ruamel.yaml YAML instance
-    yaml = YAML()
-    yaml.preserve_quotes = True  # Optional: if you want to preserve quotes around strings
-
-    # Read the YAML file with comments
-    with open(file_path, 'r') as file:
-        yaml_data = yaml.load(file)
-
-    # Update the values
-    yaml_data['VoltageTraceFile'] = new_voltage_trace_file
-    yaml_data['CapacitorValue'] = new_capacitor_value
-
-    # Write the updated YAML back to the file, preserving comments
-    with open(file_path, 'w') as file:
-        yaml.dump(yaml_data, file)
-
-    print(f"Updated VoltageTraceFile to '{new_voltage_trace_file}' and CapacitorValue to {new_capacitor_value}.")
 
 
 

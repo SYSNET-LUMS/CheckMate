@@ -2,7 +2,7 @@
 
 # Project details (can be moved to a separate configuration file)
 PROJECT_URL="https://github.com/rafayy769/fused-checkmate.git"
-CMAKE_VERSION="v3.15.4"  # Update to the latest stable version
+CMAKE_VERSION="3.15.4"  # Update to the latest stable version
 TOOLCHAIN_DIR="${HOME}/.local"
 
 # Parse command line arguments
@@ -45,7 +45,7 @@ if "$build_deps"; then
 fi
 
 if "$install_cmake"; then
-  wget https://github.com/Kitware/CMake/releases/download/$CMAKE_VERSION/cmake-$CMAKE_VERSION-Linux-x86_64.sh || exit 1
+  wget https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION-Linux-x86_64.sh || exit 1
   chmod +x cmake-$CMAKE_VERSION-Linux-x86_64.sh
   sudo ./cmake-$CMAKE_VERSION-Linux-x86_64.sh --skip-license --prefix=/usr/local || exit 1
   rm cmake-$CMAKE_VERSION-Linux-x86_64.sh
@@ -53,24 +53,23 @@ fi
 
 if "$project_deps"; then
   mkdir build && cd build
-  cmake .. -GNinja -DINSTALL_DEPENDENCIES=ON -DINSTALL_TARGET_TOOLCHAINS=ON || exit 1
+  cmake .. -GNinja -DINSTALL_DEPENDENCIES=ON -DINSTALL_TARGET_TOOLCHAINS=ON 
+  ninja|| exit 1
 fi
 
 if "$set_env_vars"; then
   echo "** This step sets environment variables. Proceed with caution if unsure. **"
-  read -r -p "Continue? (y/N) " response
-  case "$response" in
-    [Yy])
-      export ARM_GCC_ROOT="${TOOLCHAIN_DIR}/arm-gcc"
-      export MSP430_GCC_ROOT="${TOOLCHAIN_DIR}/msp430-gcc"
-      export MSP430_INC="${TOOLCHAIN_DIR}/msp430-inc"
-      export PATH="${TOOLCHAIN_DIR}/msp430-gcc/bin:$PATH"
-      export PATH="${TOOLCHAIN_DIR}/arm-gcc/bin:$PATH"
-      ;;
-    *)
-      echo "Skipping setting environment variables..."
-      ;;
-  esac
+  
+  export ARM_GCC_ROOT="${TOOLCHAIN_DIR}/arm-gcc"
+  export MSP430_GCC_ROOT="${TOOLCHAIN_DIR}/msp430-gcc"
+  export MSP430_INC="${TOOLCHAIN_DIR}/msp430-inc"
+  export PATH="${TOOLCHAIN_DIR}/msp430-gcc/bin:$PATH"
+  export PATH="${TOOLCHAIN_DIR}/arm-gcc/bin:$PATH"
+  
 fi
+
+# in fused/build
+cmake .. -GNinja -DINSTALL_DEPENDENCIES=OFF
+ninja
 
 echo "Script completed."

@@ -1,0 +1,14 @@
+colorama
+langchain_anthropic
+langchain_core
+langchain_openai
+numpy
+opencv_python
+pandas
+pydantic
+pyqtgraph
+python-dotenv
+scikit_optimize
+scipy
+scikit_image
+watchdog

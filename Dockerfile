@@ -1,4 +1,8 @@
 FROM ubuntu:22.04
 
-WORKDIR /CheckMate
+WORKDIR /home/ubuntu
+
+COPY . CheckMate
+
+
 
