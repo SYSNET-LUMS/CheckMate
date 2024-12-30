@@ -182,11 +182,11 @@ Follow the steps below to build and use the Docker container interactively:
 
 
 ## Citing CheckMate 
-Abdur-Rahman Ibrahim Sayyid-Ali, Abdul Rafay, Muhammad Abdullah Soomro, Muhammad Hamad Alizai, Naveed Anwar Bhatti. LLM-Powered Approximate Intermittent Computing, 2024
+CheckMate: LLM-Powered Approximate Intermittent Computing. Abdur-Rahman Ibrahim Sayyid-Ali, Abdul Rafay, Muhammad Abdullah Soomro, Muhammad Hamad Alizai, Naveed Anwar Bhatti. 2024
 
 ```bibtex
 @inproceedings{Ali2024CheckMate,
-  title={{CheckMate}: Extracting Permission-protected Private Information from Smartphone Voice Assistant using Zero-Permission Sensors,
+  title={{CheckMate}:LLM-Powered Approximate Intermittent Computing,
   author={Sayyid-Ali, Abdur-Rahman Ibrahim and Rafay, Abdul and Soomro, Muhammad Abdullah and Alizai, Muhammad Hamad and Bhatti, Naveed Anwar},
   year={2024},
   booktitle={arXiv},
