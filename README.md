@@ -12,9 +12,11 @@ CheckMate is a framework designed to automate the application of software-level 
 | Directory | Content |
 | --------- | ------- |
 | config | Contains files with global variables that control the execution of CheckMate (can be altered to skip/change/add steps in the CheckMate pipeline). |
-| eval-app | This folder contains the evaluation apps that CheckMate has been tested on (results of these evaluations are present in our paper cited above). |
+| benchmark_applications | This folder contains the benchmark application that CheckMate is eveluated on. |
+| eval-app | This folder is an intermediate folder where application code is compiled for target platform with checkpointing solution. |
 | fusedBin | Contains the configuration files of the fused simulator. The fused executable file must also be placed in this directory once it has been built and compiled (see Setup section for more details). |
 | lib | Contains scripts used to invoke various tools utilized by CheckMate. |
+| llm-preruns | Contains pre-run llm trials in case of evaluating CheckMate when LLM API key is unavailable. | 
 | logs | This folder will contain any temporary files created during CheckMate's execution. |
 | prompts | Contains text files that are used as prompt templates when invoking the LLM. |
 | traces | Contains sample energy traces that CheckMate can use when simulating power consumption on the fused simulator. |
@@ -49,6 +51,33 @@ Now that we have a set of approximated functions, we can tune their knobs to dis
 To tune the knobs, scikit-optimize's implementation of Bayesian Optimization is employed to effectively find the best possible knob combinations (see `runBayesOpt` function in `lib/bo.py`).
 
 ---
+## Setup with Docker
+
+Follow the steps below to build and use the Docker container interactively:
+
+*Note: For you own ease make sure you have setup the .env file before these steps though it is not necessary.*
+
+1. **Build the Docker Image**  
+   Open a terminal in the root directory of your project (where the Dockerfile is located) and run:
+   ```bash
+   docker build -t checkmate-image .
+   ```
+   This will create a Docker image named `checkmate-image`.
+
+2. **Run the Docker Container Interactively**  
+   To start the container and access a terminal within it, use the following command:
+   ```bash
+   docker run -it checkmate-image
+   ```
+   The `-it` flag ensures the container runs in interactive mode, providing you with a terminal.
+
+3. **Verify Internet Connectivity**  
+   To confirm the container has internet access, you can test connectivity with commands such as:
+   ```bash
+   ping google.com
+   ```
+   
+--- 
 ## Setup without Docker
 
 ### **1. Install `egypt`**
@@ -124,35 +153,9 @@ Create a `.env` file in the root directory of CheckMate with the following confi
    ```
 
 ---
-## Setup with Docker
-
-Follow the steps below to build and use the Docker container interactively:
-
-*Note: For you own ease make sure you have setup the .env file before these steps though it is not necessary.*
-
-1. **Build the Docker Image**  
-   Open a terminal in the root directory of your project (where the Dockerfile is located) and run:
-   ```bash
-   docker build -t checkmate-image .
-   ```
-   This will create a Docker image named `checkmate-image`.
-
-2. **Run the Docker Container Interactively**  
-   To start the container and access a terminal within it, use the following command:
-   ```bash
-   docker run -it checkmate-image
-   ```
-   The `-it` flag ensures the container runs in interactive mode, providing you with a terminal.
-
-3. **Verify Internet Connectivity**  
-   To confirm the container has internet access, you can test connectivity with commands such as:
-   ```bash
-   ping google.com
-   ```
-   
---- 
 ## **Usage**
 
+### **General Usage**
 1. **Configure the Tool:**
    - Place your **API key** and **model name** in the `.env` file.
    - Place the application to be approximated (along with its required compilation files) in the `target` folder.
@@ -163,6 +166,45 @@ Follow the steps below to build and use the Docker container interactively:
 
 3. **Note:** 
    - The recommended LLM snapshot is `gpt-4o-2024-11-20`, as it has undergone the most testing and provides stable performance.
+
+---
+
+### **Running Benchmark Applications**
+
+To run the evaluation benchmarks, use the following command with the `--bm_name` argument:
+
+```bash
+python3 main.py --bm_name {name_of_benchmark}
+```
+
+##### Example:
+To run the Sobel Filter benchmark:
+
+```bash
+python3 main.py --bm_name sobel-iclib
+```
+
+##### Without an API Key
+
+If you do not have an OpenAI or Anthropic API key, you can use pre-run LLM responses to run **CheckMate** and automate the fine-tuning process with the `--no_llm` flag:
+
+```bash
+python3 main.py --bm_name sobel-iclib --no_llm
+```
+
+We recommend running this command first to ensure CheckMate is installed and functioning correctly.
+
+
+##### Benchmark Applications and Their Names
+
+| **Application**               | **Benchmark Name**  |
+| ----------------------------- | ------------------- |
+| Activity Recognition          | `ar-iclib`          |
+| Sobel Filter                  | `sobel-iclib`       |
+| String Search                 | `stringsearch-iclib`|
+| Fast Fourier Transform        | `fft-iclib`         |
+| Link Quality Indicator        | `lqi-iclib`         |
+| Bitcount                      | `bc-iclib`          |
 
 ---
 
