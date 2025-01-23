@@ -4,6 +4,7 @@ import os
 import subprocess
 import ast
 import pandas as pd
+import argparse
 from colorama import Back, Fore, Style
 
 from config.config import (
@@ -44,9 +45,41 @@ from utils.validator import(
     validateFunction
 )
 
-app_name = "sobel-iclib"
+parser = argparse.ArgumentParser()
 
-copyFiles(f"z.Applications/{app_name}/",f"eval-apps/{app_name}/")
+parser.add_argument("--bm_name", type=str, help="Benchmark app/ Evaluation app name", required=False)
+parser.add_argument("--no_llm", action="store_true", help="include if you do not want to run LLM", required=False)
+
+args = parser.parse_args()
+
+if args.bm_name:
+    print(f"Runing Benchmark App: {args.bm_name}")
+    app_name = args.bm_name
+
+alreadyRun = False
+if args.no_llm:
+    print(f"Using LLM prerun outputs...")
+    alreadyRun = True
+
+    def copy_prerun_outputs(bm_name):
+        source_dir = os.path.join("llm-prerun", bm_name)
+        if not os.path.exists(source_dir):
+            print(f"Source directory does not exist: {source_dir}")
+            return
+
+        for folder in os.listdir(source_dir):
+            src_path = os.path.join(source_dir, folder)
+            dest_path = os.path.join(".", folder)
+            if os.path.isdir(src_path):
+                shutil.copytree(src_path, dest_path, dirs_exist_ok=True)
+                print(f"Copied {folder} to current directory.")
+            else:
+                print(f"Skipping non-folder item: {folder}")
+
+    copy_prerun_outputs(args.bm_name)
+    
+
+copyFiles(f"benchmark_applications/{app_name}/",f"eval-apps/{app_name}/")
 # copy only the Makefile, .c and .h files in eval_apps/{app_name}/ to target/
 def copyEvalAppSource(app_name, target_dir):
     subprocess.run(f"cp eval-apps/{app_name}/*.c {target_dir}",shell=True)
@@ -98,7 +131,7 @@ loadLoopPerfExamples()
 parseFunctions()
 loadEntities()
 
-alreadyRun = True
+# alreadyRun = True
 
 if not alreadyRun:
 

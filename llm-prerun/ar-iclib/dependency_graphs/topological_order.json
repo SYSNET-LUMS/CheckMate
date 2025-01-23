@@ -1,0 +1,1 @@
+["ACCEL_singleSample", "classify", "record_stats", "sqrt16", "transform", "acquire_window", "warmup_sensor", "featurize", "recognize", "train", "main"]
