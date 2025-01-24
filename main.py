@@ -305,14 +305,14 @@ if not alreadyRun:
     # Creat copy of target folder and add apx json file
     # copyFiles("target", "knob_tuning")
 
-    file_path = f"approximated_functions/apx_all.json"
-    destination_file_path = "knob_tuning"
-    shutil.copy2(file_path, destination_file_path)
 
     # Search for a Makefile in compilation_testing/ and copy it in knob_tuning/. The Makefile is in any of the subdirectories of compilation_testing/
     os.system("find compilation_testing/ -name Makefile -exec cp {} knob_tuning/ \;")
     os.system("find compilation_testing/ -name Makefile -exec cp {} target/ \;")
 
+file_path = f"approximated_functions/apx_all.json"
+destination_file_path = "knob_tuning"
+shutil.copy2(file_path, destination_file_path)
 # quit()
 
 
