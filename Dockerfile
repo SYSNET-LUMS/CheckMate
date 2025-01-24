@@ -71,12 +71,12 @@ RUN cmake .. -GNinja -DINSTALL_DEPENDENCIES=OFF && ninja \
 WORKDIR /home/ubuntu/CheckMate
 
 # Build the eval-apps
-RUN mkdir eval-apps/build && cd eval-apps/build && cmake .. -DTARGET_ARCH=msp430 && make
+RUN mkdir -p eval-apps/build && cd eval-apps/build && cmake .. -DTARGET_ARCH=msp430 && make
 
 # Install Python dependencies
 RUN pip install -r requirements.txt
 
-RUN mkdir target
+RUN mkdir -p target
 
 # Default command to start a terminal for the user
 CMD ["/bin/bash"]
