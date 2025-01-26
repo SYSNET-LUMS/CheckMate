@@ -27,6 +27,7 @@ from utils.utils import(
     printStructuredJson,
     getCodeBase,
     parseTargetFunctions,
+    Dprint,
 )
 
 from utils.compiler import(
@@ -257,7 +258,7 @@ def approximateFunction(
     ):
 
     global PRINT_LLM_CONVO
-    print("LLL: ",PRINT_LLM_CONVO)
+    Dprint("LLL: ",PRINT_LLM_CONVO)
     # global APPROXIMATION_SCRIPT
     chain = llmLangChain
 
@@ -415,7 +416,7 @@ def approximateFunctionOLD(
     def log_conversation(context, human_prompt):
         if PRINT_LLM_CONVO:
             to_print_prompt = formatConversation(context + [formatMessageForHistory(human_prompt, False)])
-            print(f"\n\n ---------------------- Approximation Prompt ---------------------- \n\n{to_print_prompt}\n\n")
+            Dprint(f"\n\n ---------------------- Approximation Prompt ---------------------- \n\n{to_print_prompt}\n\n")
 
     def extract_or_default(output, key, default='[]'):
         return output.get(key, default)
@@ -438,9 +439,9 @@ def approximateFunctionOLD(
             })
 
             if PRINT_LLM_CONVO:
-                print(Fore.GREEN)
+                Dprint(Fore.GREEN)
                 printStructuredJson(output_approximated)
-                print(Style.RESET_ALL)
+                Dprint(Style.RESET_ALL)
 
             function_code_approximated = output_approximated['approxmated_code']
             knobs_variables_list = extract_or_default(output_approximated, 'knob_variables')
@@ -470,15 +471,15 @@ def approximateFunctionOLD(
 
         except Exception as error:
             if PRINT_LLM_CONVO:
-                print(Fore.YELLOW + str(output_approximated))
-                print(Style.RESET_ALL)
+                Dprint(Fore.YELLOW + str(output_approximated))
+                Dprint(Style.RESET_ALL)
 
             last_error = [
                 formatMessageForHistory(human_prompt_approx, False),
                 formatMessageForHistory(output_approximated, True)
             ]
             this_error = f"There was a format error in your previous response. {error}. Make sure to follow the JSON format stated.\n\n"
-            print(error)
+            Dprint(error)
 
     return output_approximated, human_prompt_approx
 

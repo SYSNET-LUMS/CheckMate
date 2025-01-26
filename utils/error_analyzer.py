@@ -4,6 +4,7 @@ import cv2
 import pandas as pd
 from skimage.metrics import structural_similarity as ssim
 import subprocess
+from utils.utils import Dprint
 
 
 def generateGroundTruth(appName):
@@ -97,11 +98,11 @@ def sobelError(pathToCodebase):
     # # Change back to the original working directory
     os.chdir(cwd)
 
-    # print(f"Debug: SSIM Score (Accuracy): {ssim_score}")
-    # print(f"Debug: Error: {(1 - ssim_score) / 2}")
+    # Dprint(f"Debug: SSIM Score (Accuracy): {ssim_score}")
+    # Dprint(f"Debug: Error: {(1 - ssim_score) / 2}")
 
-    print(f"Debug: F1 Score: {ssim_score}")
-    print(f"Debug: Error: {1 - ssim_score}")
+    Dprint(f"Debug: F1 Score: {ssim_score}")
+    Dprint(f"Debug: Error: {1 - ssim_score}")
 
     # Return
     return (1 - ssim_score) / 2
@@ -146,11 +147,11 @@ def susanError(pathToCodebase):
     # # Change back to the original working directory
     os.chdir(cwd)
 
-    # print(f"Debug: SSIM Score (Accuracy): {ssim_score}")
-    # print(f"Debug: Error: {(1 - ssim_score) / 2}")
+    # Dprint(f"Debug: SSIM Score (Accuracy): {ssim_score}")
+    # Dprint(f"Debug: Error: {(1 - ssim_score) / 2}")
 
-    print(f"Debug: F1 Score: {f1_score}")
-    print(f"Debug: Error: {1 - f1_score}")
+    Dprint(f"Debug: F1 Score: {f1_score}")
+    Dprint(f"Debug: Error: {1 - f1_score}")
 
     # Return
     # return (1 - ssim_score) / 2
@@ -201,7 +202,7 @@ def stringSearchError(pathToCodebase):
         elif ground_truth[i] == "1" and predictions[i] == "0":
             fn += 1
 
-    print(f"TP: {tp}, FP: {fp}, FN: {fn}")
+    Dprint(f"TP: {tp}, FP: {fp}, FN: {fn}")
 
     precision = tp / (tp + fp) if (tp + fp) > 0 else 0
     recall = tp / (fn + tp) if (fn + tp) > 0 else 0
@@ -214,7 +215,7 @@ def stringSearchError(pathToCodebase):
     # Change back to the original working directory
     os.chdir(cwd)
 
-    print(f"F1 Score: {f1_score}")
+    Dprint(f"F1 Score: {f1_score}")
 
     return 1 - f1_score
 
@@ -247,8 +248,8 @@ def fftError(pathToCodebase):
     # residual_sum_of_squares = np.sum((original_magnitude - approximate_magnitude) ** 2)
     # total_sum_of_squares = np.sum((original_magnitude - np.mean(original_magnitude)) ** 2)
 
-    # print(original_magnitude , np.mean(original_magnitude))
-    # print(residual_sum_of_squares )
+    # Dprint(original_magnitude , np.mean(original_magnitude))
+    # Dprint(residual_sum_of_squares )
 
     # r_squared = 1 - (residual_sum_of_squares / total_sum_of_squares)
 

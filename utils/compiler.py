@@ -10,7 +10,8 @@ from config.config import(
     API_NAME,
 )
 from utils.utils import (
-    copyFiles
+    copyFiles,
+    Dprint
 )
 from utils.data_structures import (
     FixedSizePairList
@@ -120,7 +121,7 @@ def generateMakeFile(target_path):
         chat = ChatAnthropic(api_key=api_key,model=model)
 
     if not api_key or not model:
-        print("Error: Missing OpenAI API key or model in environment variables.")
+        Dprint("Error: Missing OpenAI API key or model in environment variables.")
         return
 
     chat_history = FixedSizePairList(5)
@@ -138,12 +139,12 @@ def generateMakeFile(target_path):
         success, error_message = compileAndLog(target_path)
         
         if success:
-            print("Compilation successful\n")
+            Dprint("Compilation successful\n")
             return 0
 
         response = queryGPT(chat, chat_history, files_list, error_message)
 
-    print("Compilation failed after 10 attempts\n")
+    Dprint("Compilation failed after 10 attempts\n")
     return 1
 
 def compileTest(function): 

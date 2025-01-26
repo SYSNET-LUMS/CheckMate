@@ -8,3 +8,4 @@ REVERSED_PDG = 0
 TEXT_PLANING = 1
 # API_NAME = 'OpenAI'
 API_NAME = 'Anthropic'
+DEBUG = 0

@@ -16,3 +16,5 @@ pyqtgraph
 scikit_optimize
 scikit_image
 watchdog
+tqdm
+tabulate

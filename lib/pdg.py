@@ -2,7 +2,8 @@ from config.config import (
     REVERSED_PDG
 )
 from utils.utils import (
-    getFilesList
+    getFilesList,
+    Dprint
 )
 from lib.llm import(
     generateExpandMakeFile
@@ -60,11 +61,11 @@ def createRTLFile():
 
             subprocess.run("make clean", shell=True, check=True, cwd=target_path)
             
-            print('Success\n')
+            Dprint('Success\n')
             break
             # return 0  # Successful compilation
         except Exception as e:
-            print(e)
+            Dprint(e)
 
     sys.stdout = original
         
@@ -105,10 +106,10 @@ def createPDG():
         dot_data = file.read()
 
     edges = parse_dot(dot_data)
-    # print(edges)
+    # Dprint(edges)
 
     nodes = sorted({element for tup in edges for element in tup})
-    # print(nodes)
+    # Dprint(nodes)
 
     adj_matrix, nodes_list = create_adj_matrix(nodes, edges)
 
@@ -200,6 +201,7 @@ def executeTopoSort():
 # --- main ---
 
 def initPDGGen(): #Cat 5
+    Dprint("PDG Generating...\n")
     
     # if dependency_graphs folder exists then dont call functions.
     if not os.path.exists("dependency_graphs/"):
@@ -207,7 +209,7 @@ def initPDGGen(): #Cat 5
         createPDG()
         executeTopoSort()
     else:
-        print("PDG already exists - reading files only")    
+        Dprint("PDG already exists - reading files only")    
 
 
     # Load PDG and sort
@@ -222,6 +224,14 @@ def initPDGGen(): #Cat 5
     except:
         pass
 
+    if REVERSED_PDG:
+        PDG, topological_order = reverse_PDG(PDG, topological_order)
+
+    Dprint("PDG Generation Successful\n")
+
+    Dprint(PDG)
+    Dprint("Topological Order:", topological_order)
+    
     return PDG, topological_order
 
 
@@ -241,15 +251,15 @@ def reverse_PDG(PDG, topological_order):
 
     return reversed_PDG, reversed_topological_order
 
-# Create PDG and run topological sort
-print("PDG Generating...\n")
-PDG, topological_order = initPDGGen()
-print("PDG Generation Successful\n")
+# # Create PDG and run topological sort
+# Dprint("PDG Generating...\n")
+# PDG, topological_order = initPDGGen()
+# Dprint("PDG Generation Successful\n")
 
-# Conditionally reverse the PDG and topological order
-if REVERSED_PDG:
-    PDG, topological_order = reverse_PDG(PDG, topological_order)
+# # Conditionally reverse the PDG and topological order
+# if REVERSED_PDG:
+#     PDG, topological_order = reverse_PDG(PDG, topological_order)
 
-print(PDG)
-print("Topological Order:", topological_order)
+# Dprint(PDG)
+# Dprint("Topological Order:", topological_order)
 

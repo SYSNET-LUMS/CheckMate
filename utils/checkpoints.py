@@ -2,6 +2,7 @@ import os
 import shutil
 import subprocess
 import json
+from utils.utils import Dprint
 
 def buildObjects(appName):
 
@@ -27,7 +28,7 @@ def buildObjects(appName):
             stderr=subprocess.DEVNULL,
         )
     except subprocess.CalledProcessError as e:
-        print(f"An error occurred while building the objects: {e}")
+        Dprint(f"An error occurred while building the objects: {e}")
 
     # change back to the original working directory
     os.chdir(cwd)
@@ -55,7 +56,7 @@ def runFused(pathToHex: str):
             stderr=subprocess.DEVNULL,
         )
     except subprocess.CalledProcessError as e:
-        print(f"An error occurred while running the fused simulator: {e}")
+        Dprint(f"An error occurred while running the fused simulator: {e}")
 
     # change back to the original working directory
     os.chdir(cwd)
@@ -98,7 +99,7 @@ def copyNonMakefiles(targetDir, appName):
             
             # Copy file from source to destination
             shutil.copy2(source_file, destination_file)
-            # print(f"Copied {source_file} to {destination_file}")
+            # Dprint(f"Copied {source_file} to {destination_file}")
 
 
 

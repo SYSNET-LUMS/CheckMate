@@ -4,7 +4,7 @@ import os
 import math
 
 from config.globals import TARGET_FILES
-from utils.utils import findFileOfFunc, writeFunctionsToJson
+from utils.utils import findFileOfFunc, writeFunctionsToJson, Dprint
 from lib.lsp import lsp_patcher
 
 
@@ -38,7 +38,7 @@ def updateKnobValue(functionDict, newValue, knob):
     # Update the knob value
     updated_knob_line = knob_line.split("=")[0] + f"= {newValue};"
 
-    # print(f"The knob line was updated.\n{updated_knob_line}")
+    # Dprint(f"The knob line was updated.\n{updated_knob_line}")
 
     # Update the function code
     function_lines[knob_line_number] = updated_knob_line
@@ -71,14 +71,14 @@ def compileFunction(path):
                 stderr=subprocess.STDOUT,
             )
 
-        # print("Success\n")
+        # Dprint("Success\n")
         return 0  # Successful compilation
     except Exception as e:
-        print(e)
+        Dprint(e)
         with open(os.path.join(path, "compiler_log.txt"), "r") as output_file:
             response = output_file.read()
 
-        print(response)
+        Dprint(response)
         return 1  # Compilation failed
 
 
@@ -102,7 +102,7 @@ def executeFunction(application, path):
             )
             return 0
         except Exception as e:
-            print(e)
+            Dprint(e)
             return 1
     else:
         command = f"./main"
@@ -114,7 +114,7 @@ def executeFunction(application, path):
             )
             return 0
         except Exception as e:
-            print(e)
+            Dprint(e)
             return 1
 
 
@@ -149,10 +149,10 @@ def validateFunction(functionDict):
         knob_step_size = knob_step_sizes[index][knob]
 
         # Debug
-        # print(f"Working on Knob: {knob}")
-        # print(f"Lower Bound: {lower_bound}")
-        # print(f"Upper Bound: {upper_bound}")
-        # print(f"Step Size: {knob_step_size}")
+        # Dprint(f"Working on Knob: {knob}")
+        # Dprint(f"Lower Bound: {lower_bound}")
+        # Dprint(f"Upper Bound: {upper_bound}")
+        # Dprint(f"Step Size: {knob_step_size}")
 
         # Update the knob value starting from upper bound to lower bound in a binary search fashion
         if knob_step_size == "Integer":
@@ -162,7 +162,7 @@ def validateFunction(functionDict):
 
         while current_value >= lower_bound:
 
-            # print(f"Updating the knob value to: {current_value}")
+            # Dprint(f"Updating the knob value to: {current_value}")
 
             # Update knob value and write to JSON
             updateKnobValue(functionDict, current_value, knob)
@@ -201,7 +201,7 @@ def validateFunction(functionDict):
             if current_value <= lower_bound:
                 # Delete the json from the approximated functions
                 safeFlag = False
-                print("rasied")
+                Dprint("rasied")
                 
                 quit()
                 os.remove(json_file_path)
@@ -210,4 +210,4 @@ def validateFunction(functionDict):
         if not safeFlag:
             break
 
-    print(f"Successfully Validated {functionName}")
+    Dprint(f"Successfully Validated {functionName}")

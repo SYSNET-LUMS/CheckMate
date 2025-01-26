@@ -25,7 +25,7 @@ Bme280TraceFile: none
 AccelerometerTraceFile: none
 
 # ------ Simulation control ------
-SimTimeLimit: 10 # Simulation time limit (seconds)
+SimTimeLimit: 60 # Simulation time limit (seconds)
 IoSimulationStopperTarget: 3 # Simulation stops after X posedge of pin connected to simstopper
 
 # ------ Timesteps ------

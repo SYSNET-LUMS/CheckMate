@@ -1,4 +1,4 @@
-from utils.utils import getNodeParent
+from utils.utils import getNodeParent, Dprint
 from config.config import (
     GIVE_FORMAT_EXAMPLES,
     GIVE_LOOP_PERF_EXMAPLES
@@ -40,7 +40,7 @@ def getConversationHistory(function_list, chat_history): #Cat 6
         try:
             manufactured_history += chat_history[function]
         except:
-            print("A converstation that does not exist was attempted to be added: ", function)
+            Dprint("A converstation that does not exist was attempted to be added: ", function)
             continue
 
     return manufactured_history

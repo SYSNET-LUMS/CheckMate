@@ -5,7 +5,12 @@ import subprocess
 import ast
 import pandas as pd
 import argparse
+from tqdm import tqdm
 from colorama import Back, Fore, Style
+import warnings
+from tabulate import tabulate
+# Ignore FutureWarnings
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 from config.config import (
     TEXT_PLANING,
@@ -34,7 +39,8 @@ from utils.utils import (
     formatMessageForHistory,
     copyFiles,
     getAppName,
-    writeFunctionsToJson
+    writeFunctionsToJson,
+    Dprint
 )
 
 from utils.compiler import(
@@ -53,18 +59,18 @@ parser.add_argument("--no_llm", action="store_true", help="include if you do not
 args = parser.parse_args()
 
 if args.bm_name:
-    print(f"Runing Benchmark App: {args.bm_name}")
+    Dprint(f"Runing Benchmark App: {args.bm_name}")
     app_name = args.bm_name
 
 alreadyRun = False
 if args.no_llm:
-    print(f"Using LLM prerun outputs...")
+    Dprint(f"Using LLM prerun outputs...")
     alreadyRun = True
 
     def copy_prerun_outputs(bm_name):
         source_dir = os.path.join("llm-prerun", bm_name)
         if not os.path.exists(source_dir):
-            print(f"Source directory does not exist: {source_dir}")
+            Dprint(f"Source directory does not exist: {source_dir}")
             return
 
         for folder in os.listdir(source_dir):
@@ -72,9 +78,9 @@ if args.no_llm:
             dest_path = os.path.join(".", folder)
             if os.path.isdir(src_path):
                 shutil.copytree(src_path, dest_path, dirs_exist_ok=True)
-                print(f"Copied {folder} to current directory.")
+                Dprint(f"Copied {folder} to current directory.")
             else:
-                print(f"Skipping non-folder item: {folder}")
+                Dprint(f"Skipping non-folder item: {folder}")
 
     copy_prerun_outputs(args.bm_name)
     
@@ -101,9 +107,7 @@ from lib.llm import (
 from lib.bo import runBayesOpt
 
 from lib.pdg import (
-    initPDGGen,
-    PDG,
-    topological_order
+    initPDGGen
 )
 from utils.models import AnnotateData, ApproximatedData
 from config.globals import CHAT_HISTORY, PLATFORM_ARCHITECTURE
@@ -114,7 +118,9 @@ import csv
 
 # ----------- README FOLLOW ALONG START HERE -----------
 
-# LLM API initialization and PDF generation have already been done in lib/llm.py and lib/pdf.py respectively.
+PDG, topological_order = initPDGGen()
+
+# LLM API initialization already been done in lib/llm.py.
 
 
 # Load filenames of target files
@@ -158,7 +164,7 @@ if not alreadyRun:
 
     # Filter topological_order to only contain functions to be targeted as told by LLM
     filtered_topological_order = [] # Making new varaibale because topological_order may be used else where.
-    print(target_functions)
+    Dprint(target_functions)
     for function in topological_order:
         try:
             if target_functions[function] == "approximate" or target_functions[function] == "Approximate":
@@ -176,8 +182,8 @@ if not alreadyRun:
         """
 
         this_context = manufacturerContext(PDG, this_function)
-        print("\n\n\n\n --- start \n\n")
-        print(this_context)
+        Dprint("\n\n\n\n --- start \n\n")
+        Dprint(this_context)
 
         """
             Step 1: Identify this_function's purpose
@@ -193,8 +199,8 @@ if not alreadyRun:
 
         # Add purpose identification convo to history(context) object
         this_context = this_context + this_purpose_convo
-        print("\n\n\n\n --- Perpose \n\n")
-        print(this_context)
+        Dprint("\n\n\n\n --- Perpose \n\n")
+        Dprint(this_context)
 
         """
             Step 2: Annotate the function
@@ -221,8 +227,8 @@ if not alreadyRun:
 
         # Add annotation convo to history(context) object
         this_context = this_context + this_plan_anno_convo # Add the annotation conversation context for approximation prompt
-        print("\n\n\n\n --- Planning \n\n")
-        print(this_context)
+        Dprint("\n\n\n\n --- Planning \n\n")
+        Dprint(this_context)
 
         err_approximation = ""
         while True:
@@ -282,7 +288,9 @@ if not alreadyRun:
             file.write(str(approximated_functions_dict) + "\n")
             file.write(str(CHAT_HISTORY) + "\n")
 
-print("\nAll functions approximated! \n\n")
+print(Back.YELLOW)
+print("ALL FUNCTIONS APPROXIMATED\n")
+print(Style.RESET_ALL)
 
 # Read application.txt file from target/ and read the function name
 # app_names = ["lqi-iclib", "stringsearch-iclib"]
@@ -295,9 +303,6 @@ generateGroundTruth(app_name)
 copyFiles("target", "knob_tuning")
 # quit()
 if not alreadyRun:
-    print(Back.YELLOW)
-    print("ALL FUNCTIONS APPROXIMATED\n")
-    print(Style.RESET_ALL)
 
     # Join all validated approximations
     joinJsonFiles("approximated_functions/", "apx", "apx_all.json")
@@ -330,10 +335,9 @@ traces = [
     # "../traces/RF_9.csv",
     # "../traces/Solar_Indoor_Moving.csv",
 ]
-# traces = ["CapSimu/traces/RF_2.csv"]
 
 # Create a DataFrame to store the best knobs and the error, checkpoints
-columns = ["knobs_list", "error", "checkpoints", "trace", "capacitor"]
+columns = ["knobs_list", "error", "checkpoints", "original_checkpoints", "checkpoint_reduction","optimization_metric", "trace", "capacitor"]
 df = pd.DataFrame(columns=columns)
 
 def generateConfigFile(trace, capacitor):
@@ -346,8 +350,8 @@ def generateConfigFile(trace, capacitor):
         f.write(f"VoltageTraceFile: \"{trace}\"\n")
         f.write(f"CapacitorValue: {capacitor}\n")
 
-for trace in traces:
-    for capacitor in capacitors:
+for trace in tqdm(traces, desc="Optimizing for trace: "):
+    for capacitor in tqdm(capacitors, desc="Optimizing for capacitor: "):
 
         # generate the corresponding config file for fused
         generateConfigFile(trace, capacitor)
@@ -372,8 +376,8 @@ for trace in traces:
 
         best_score, best_knobs = runBayesOpt()
 
-        print(f"Best knobs: {best_knobs}")
-        print(f"Best score (E+C): {best_score}")
+        Dprint(f"Best knobs: {best_knobs}")
+        Dprint(f"Best score (E+C): {best_score}")
 
         # Find the error and checkpoints using the best knobs from logs/{appName}_{capacitor}_{trace}.csv
         best_error = None
@@ -390,28 +394,36 @@ for trace in traces:
 
                 # Convert knobs_list_str (which is something like "[1','3','4]") to actual list
                 # Remove unwanted characters and convert it to a proper list
-                knobs_list_str = ','.join(knobs_list_str)  # Merge if knobs_list_str is split across multiple columns
-                knobs_list = ast.literal_eval(knobs_list_str.replace("'", ""))  # Convert the string to a list of integers
+                knobs_list_str = (','.join(knobs_list_str)).replace("'", "")  # Merge if knobs_list_str is split across multiple columns
+                # knobs_list = ast.literal_eval(knobs_list_str.replace("'", ""))  # Convert the string to a list of integers
 
-                print(str(knobs_list) , str(best_knobs), str(knobs_list) == str(best_knobs))
-                if str(knobs_list) == str(best_knobs):
+                Dprint(str(knobs_list_str) , str(best_knobs), str(knobs_list_str) == str(best_knobs))
+                if str(knobs_list_str) == str(best_knobs):
                     best_error = error
                     best_checkpoints = checkpoints
                     break
 
-        df = df._append(
-            {
-                columns[0]: best_knobs,
-                columns[1]: best_error,
-                columns[2]: best_checkpoints,
-                columns[3]: trace,
-                columns[4]: capacitor,
-            },
-            ignore_index=True,
-        )
+        # Check for empty or all-NA columns
+        print(best_knobs)
+        new_row = pd.DataFrame({
+            columns[0]: [best_knobs],
+            columns[1]: best_error,
+            columns[2]: best_checkpoints,
+            columns[3]: original_checkpoints,
+            columns[4]: int(best_checkpoints)/int(original_checkpoints),
+            columns[5]: best_score,
+            columns[6]: trace,
+            columns[7]: capacitor,
+        })
 
+        # Append the filtered row
+        df = pd.concat([df,new_row])
         with open(f"logs/original_checkpoints_{app_name}-{capacitor}_{trace_name}.txt", "w") as f:
             f.write(str(original_checkpoints))
 
 # Save the DataFrame to a csv file
 df.to_csv(f"logs/best_knobs_{app_name}.csv", index=False)
+
+print("CheckMate has ended...")
+print(f"Results {app_name}:")
+print(df)

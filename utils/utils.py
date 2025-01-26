@@ -5,9 +5,10 @@ import shutil
 import re
 import pandas as pd
 import ast
+import sys
 
 
-from config.config import APPROXIMATION_CONTEXT, GIVE_FORMAT_EXAMPLES, GIVE_LOOP_PERF_EXMAPLES
+from config.config import APPROXIMATION_CONTEXT, GIVE_FORMAT_EXAMPLES, GIVE_LOOP_PERF_EXMAPLES, DEBUG
 from config.globals import (
     GLOBAL_CONTEXT,
     TARGET_FILES,
@@ -118,7 +119,7 @@ def copyFiles(source_path, destination_path): #Cat 4
             src_file = os.path.join(dirpath, filename)
             dest_file = os.path.join(dest_dir, filename)
             shutil.copy2(src_file, dest_file)
-            # print(f"Copied {src_file} to {dest_file}")
+            # Dprint(f"Copied {src_file} to {dest_file}")
 
 
 def writeFunctionsToJson(func_dict, file_path): #Cat 3  (Add base_file_path arg)
@@ -210,7 +211,7 @@ def getConversationHistory(function_list, chat_history): #Cat 6 -
         try:
             manufactured_history += chat_history[function]
         except:
-            print("A converstation that does not exist was attempted to be added")
+            Dprint("A converstation that does not exist was attempted to be added")
             continue
 
     return manufactured_history
@@ -262,14 +263,14 @@ def manufacturerContext(PDG, this_function): #Cat 6 -
     global GIVE_FORMAT_EXAMPLES
 
     parent_entities = getNodeParent(this_function, PDG)
-    # print("\n\n\n\n\n\n\n")
-    # print(parent_entities)
+    # Dprint("\n\n\n\n\n\n\n")
+    # Dprint(parent_entities)
     parent_context = getConversationHistory(parent_entities, CHAT_HISTORY)
-    # print("\n\n\n\n\n\n\n")
-    # print(parent_context)
+    # Dprint("\n\n\n\n\n\n\n")
+    # Dprint(parent_context)
     this_context = GLOBAL_CONTEXT
-    # print("\n\n\n\n\n\n\n")
-    # print(this_context)
+    # Dprint("\n\n\n\n\n\n\n")
+    # Dprint(this_context)
 
     if GIVE_LOOP_PERF_EXMAPLES:
         this_context += LOOP_PERF_EXAMPLES
@@ -316,13 +317,13 @@ def printStructuredJson(json_obj): #Cat 4
     json_obj (dict): JSON object to be printed.
     """
     structured_json = json.dumps(json_obj, indent=4)
-    print(structured_json)
+    Dprint(structured_json)
 
 
 def joinJsonFiles(directory, name_template, output_filename): #Cat 3 -
     combined_data = []
     if not output_filename.endswith(".json"):
-        print("Output file name must end with .json")
+        Dprint("Output file name must end with .json")
         return None
 
     # List all files in the directory
@@ -347,7 +348,7 @@ def joinJsonFiles(directory, name_template, output_filename): #Cat 3 -
     with open(output_file, "w") as file:
         json.dump(combined_data, file, indent=4)
 
-    print(f"Combined JSON file created at: {output_file}")
+    Dprint(f"Combined JSON file created at: {output_file}")
 
 
 def loadAndProcessJsonApxFile(file_path): # Unused
@@ -401,9 +402,9 @@ def getCodeBase(): #Cat 4 -N
             with open(file_path, 'r', encoding='utf-8') as f:
                 all_files += f.read() + "\n\n\n"  # Append file content and add a newline between files
         except FileNotFoundError:
-            print(f"File {file_path} not found.")
+            Dprint(f"File {file_path} not found.")
         except Exception as e:
-            print(f"An error occurred while reading {file_path}: {e}")
+            Dprint(f"An error occurred while reading {file_path}: {e}")
     
     return all_files
 
@@ -422,3 +423,21 @@ def parseTargetFunctions(text):
         return extracted_dict
     else:
         return None
+    
+def Dprint(*message):
+    global DEBUG
+    if DEBUG:
+        print(' '.join(map(str, message)))
+
+def itrPrint(data_tuples: tuple):
+    """
+    Takes a tuple and removes the last n lines and replaces them on terminal
+    """
+    for i in range(len(data_tuples)):
+        sys.stdout.write("\033[F")  # Move cursor up one line
+        sys.stdout.write("\033[K")  # Clear the line
+        sys.stdout.flush()
+
+    for item in data_tuples:
+        print(item)
+

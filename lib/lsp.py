@@ -4,6 +4,7 @@ import json
 import urllib.parse
 import sys
 import os
+from utils.utils import Dprint
 
 # LSP init and api calls
 def start_clangd():
@@ -140,24 +141,24 @@ def lsp_extractor(file_path, positions_file_flag=False, print_flag=False):
     try:
         file_content = open(file_path, 'r').read()
     except FileNotFoundError:
-        print(f"Error: File not found at {file_path}")
+        Dprint(f"Error: File not found at {file_path}")
         return 
     
     process = start_clangd() # Starts Connection with clangd server
     init_req = initialize_clangd(process)
     if print_flag:
-        print("Initialization response:", init_req)
-        print("\n\n ----------- \n\n")
+        Dprint("Initialization response:", init_req)
+        Dprint("\n\n ----------- \n\n")
 
     open_req = did_open(process, file_path, file_content)
     if print_flag:
-        print("didOpen response: ", open_req) # did Open confirmation
-        print("\n\n ----------- \n\n")
+        Dprint("didOpen response: ", open_req) # did Open confirmation
+        Dprint("\n\n ----------- \n\n")
 
     symbols_response = get_document_symbols(process, path_to_uri(file_path))
     if print_flag:
-        print("Symbols response: ",symbols_response)
-        print("\n\n ----------- \n\n")
+        Dprint("Symbols response: ",symbols_response)
+        Dprint("\n\n ----------- \n\n")
 
     symbols_response = [item for item in symbols_response["result"]] 
 
@@ -187,7 +188,7 @@ def read_file_content(file_path):
         with open(file_path, 'r') as file:
             return file.readlines()
     except FileNotFoundError:
-        print(f"Error: File not found at {file_path}")
+        Dprint(f"Error: File not found at {file_path}")
         return None
 
 def lsp_patcher(dir_path, json_file_name):
@@ -204,7 +205,7 @@ def lsp_patcher(dir_path, json_file_name):
         with open(json_file_path, 'r') as f:
             approximated_code = json.load(f)
     except FileNotFoundError:
-        print(f"Error: JSON file not found at {json_file_path}")
+        Dprint(f"Error: JSON file not found at {json_file_path}")
         return
 
     # Group approximated functions by file base name
@@ -220,7 +221,7 @@ def lsp_patcher(dir_path, json_file_name):
     # Start the LSP (clangd) process
     process = start_clangd()
     initialize_clangd(process)
-    print("LSP Server initialized")
+    Dprint("LSP Server initialized")
 
     for file_path, functions in functions_by_file.items():
         file_lines = read_file_content(file_path)
@@ -228,10 +229,10 @@ def lsp_patcher(dir_path, json_file_name):
             continue
 
         did_open(process, file_path, ''.join(file_lines))
-        print(f"LSP didOpen request for {file_path}")
+        Dprint(f"LSP didOpen request for {file_path}")
 
         symbols_response = get_document_symbols(process, path_to_uri(file_path))
-        print(f"LSP documentSymbols request for {file_path}")
+        Dprint(f"LSP documentSymbols request for {file_path}")
 
         function_symbols = [item for item in symbols_response["result"] if item.get("kind") == 12]
         symbol_map = {item['name']: item['location']['range'] for item in function_symbols}
@@ -259,7 +260,7 @@ def lsp_patcher(dir_path, json_file_name):
         with open(file_path, 'w') as f:
             f.write(new_content)
 
-        print(f"Updated file {file_path} with approximated functions.")
+        Dprint(f"Updated file {file_path} with approximated functions.")
 
     # Terminate the LSP process
     process.terminate()
